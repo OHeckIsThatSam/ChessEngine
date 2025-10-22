@@ -1,6 +1,4 @@
-﻿using ChessEngine.Core.Utilities;
-
-namespace ChessEngine.Core;
+﻿namespace ChessEngine.Core;
 
 public static class MoveGeneration
 {
@@ -21,7 +19,7 @@ public static class MoveGeneration
          * created.
          */
         ulong oppositionAttacks = AttackBitboards.GetAllAttacks(
-            position.OpositionColour,
+            position.OppositionColour,
             BitboardUtil.RemoveBit(position.OccupiedBitboard, kingSquare),
             position.PieceBitboards);
       
@@ -52,7 +50,7 @@ public static class MoveGeneration
                 moveMask |= AttackBitboards
                     .GetDiagonalAttackRay(checkerSquare, kingSquare);
                 moveMask |= AttackBitboards
-                    .GetOrthagonalAttackRay(checkerSquare, kingSquare);
+                    .GetOrthogonalAttackRay(checkerSquare, kingSquare);
             }
         }
 
@@ -64,10 +62,10 @@ public static class MoveGeneration
 
         // Diagonal pins (bishops, queens)
         ulong opponentPieces = position.
-            PieceBitboards[position.OpositionColour | Piece.Bishop];
+            PieceBitboards[position.OppositionColour | Piece.Bishop];
 
         opponentPieces |= position.
-            PieceBitboards[position.OpositionColour | Piece.Queen];
+            PieceBitboards[position.OppositionColour | Piece.Queen];
 
         int[] activeBits = BitboardUtil.GetActiveBits(opponentPieces);
         for (int i = 0; i < activeBits.Length; i++)
@@ -81,12 +79,12 @@ public static class MoveGeneration
                 square);
         }
 
-        // Orthagonal pins (rooks, queens)
+        // Orthogonal pins (rooks, queens)
         opponentPieces = position.
-            PieceBitboards[position.OpositionColour | Piece.Rook];
+            PieceBitboards[position.OppositionColour | Piece.Rook];
 
         opponentPieces |= position.
-            PieceBitboards[position.OpositionColour | Piece.Queen];
+            PieceBitboards[position.OppositionColour | Piece.Queen];
         
         activeBits = BitboardUtil.GetActiveBits(opponentPieces);
         for (int i = 0; i < activeBits.Length; i++)
@@ -96,7 +94,7 @@ public static class MoveGeneration
             CalculatePinMasks(
                 position,
                 pinMasks,
-                AttackBitboards.GetOrthagonalAttackRay(square, kingSquare),
+                AttackBitboards.GetOrthogonalAttackRay(square, kingSquare),
                 square);
         }
 
@@ -122,7 +120,7 @@ public static class MoveGeneration
     {
         ulong kingAttacks = AttackBitboards.KingAttacks[kingSquare];
 
-        // Remove king attacks on squares attacked by the oposition
+        // Remove king attacks on squares attacked by the opposition
         ulong illegalKingAttacks = kingAttacks & oppositionAttacks;
 
         // Remove king attacks blocked by friendly pieces
@@ -249,7 +247,7 @@ public static class MoveGeneration
             ulong startingRank = position.ColourToMove == Piece.White ?
                 BitboardUtil.Rank2Mask : BitboardUtil.Rank7Mask;
 
-            ulong oppPieces = position.PieceBitboards[position.OpositionColour];
+            ulong oppPieces = position.PieceBitboards[position.OppositionColour];
             ulong pawnAttacks = AttackBitboards.PawnAttacks[position.ColourToMove, pawnSquare];
 
             ulong combinedMoveMask;
@@ -263,7 +261,7 @@ public static class MoveGeneration
             }
 
             // Pawn moves single and double
-            // Single move is seperate so double move can extended regadless of legality
+            // Single move is separate so double move can extended regardless of legality
             ulong singleMove = BitboardUtil.AddBit(0, pawnSquare + pawnPushOffset) 
                 & position.EmptyBitboard;
             ulong legalSingleMove = singleMove & combinedMoveMask;
@@ -287,7 +285,7 @@ public static class MoveGeneration
                 ulong attackedBySquares = AttackBitboards
                     .PawnAttacks[position.ColourToMove, enPassantSquare];
                 ulong oppPawns = position
-                    .PieceBitboards[position.OpositionColour | Piece.Pawn];
+                    .PieceBitboards[position.OppositionColour | Piece.Pawn];
 
                 Move move = new()
                 {
@@ -324,7 +322,7 @@ public static class MoveGeneration
 
                 if (enPassantAttacks != 0)
                 {
-                    // Create seperate move mask to allow en passant if opp pawn is checking
+                    // Create separate move mask to allow en passant if opp pawn is checking
                     int oppPawnSquare = enPassantSquare - pawnPushOffset;
                     ulong enPassantMoveMask = combinedMoveMask;
 
@@ -336,7 +334,7 @@ public static class MoveGeneration
 
                     if ((enPassantAttacks & enPassantMoveMask) != 0)
                     {
-                        // Check if en passant would cause illegal check from orthoganal attacker
+                        // Check if en passant would cause illegal check from orthogonal attacker
                         // Include where pawn will be after capture to block vertical attacks
                         ulong blockingPawns = BitboardUtil
                             .AddBit(pawn, oppPawnSquare);
@@ -352,7 +350,7 @@ public static class MoveGeneration
                                 TargetPawnSquare = oppPawnSquare,
                                 IsCapture = true,
                                 IsEnPassant = true,
-                                CapturedPiece = position.OpositionColour | Piece.Pawn
+                                CapturedPiece = position.OppositionColour | Piece.Pawn
                             });
                         }
                     }
@@ -526,19 +524,19 @@ public static class MoveGeneration
     {
         ulong checkers = 0;
 
-        checkers |= position.PieceBitboards[position.OpositionColour | Piece.Pawn] & 
+        checkers |= position.PieceBitboards[position.OppositionColour | Piece.Pawn] & 
             AttackBitboards.PawnAttacks[position.ColourToMove, kingSquare];
 
-        checkers |= position.PieceBitboards[position.OpositionColour | Piece.Knight] &
+        checkers |= position.PieceBitboards[position.OppositionColour | Piece.Knight] &
             AttackBitboards.KnightAttacks[kingSquare];
 
-        checkers |= position.PieceBitboards[position.OpositionColour | Piece.Bishop] &
+        checkers |= position.PieceBitboards[position.OppositionColour | Piece.Bishop] &
             AttackBitboards.GetBishopAttacks(kingSquare, position.OccupiedBitboard);
 
-        checkers |= position.PieceBitboards[position.OpositionColour | Piece.Rook] &
+        checkers |= position.PieceBitboards[position.OppositionColour | Piece.Rook] &
             AttackBitboards.GetRookAttacks(kingSquare, position.OccupiedBitboard);
 
-        checkers |= position.PieceBitboards[position.OpositionColour | Piece.Queen] &
+        checkers |= position.PieceBitboards[position.OppositionColour | Piece.Queen] &
             AttackBitboards.GetQueenAttacks(kingSquare, position.OccupiedBitboard);
 
         return checkers;
@@ -553,7 +551,7 @@ public static class MoveGeneration
         ulong pinnedPieces = attackRay & position.PieceBitboards[position.ColourToMove];
 
         // Ignore rays blocked by opponent pieces
-        if ((attackRay & position.PieceBitboards[position.OpositionColour]) != 0)
+        if ((attackRay & position.PieceBitboards[position.OppositionColour]) != 0)
             return;
 
         if (attackRay == 0 || BitboardUtil.Count(pinnedPieces) != 1)
@@ -577,7 +575,7 @@ public static class MoveGeneration
     /// <param name="position">The current board state</param>
     /// <param name="startSquare">The square the piece is moving from</param>
     /// <param name="bitboard">The bitboard containing the moves</param>
-    /// <returns>List of indivual moves</returns>
+    /// <returns>List of individual moves</returns>
     private static List<Move> CreateMoves(
         Board position, 
         int startSquare, 
@@ -585,10 +583,10 @@ public static class MoveGeneration
     {
         List<Move> moves = [];
 
-        int[] attackSqaures = BitboardUtil.GetActiveBits(bitboard);
-        for (int i = 0; i < attackSqaures.Length; i++)
+        int[] attackSquares = BitboardUtil.GetActiveBits(bitboard);
+        for (int i = 0; i < attackSquares.Length; i++)
         {
-            int targetSquare = attackSqaures[i];
+            int targetSquare = attackSquares[i];
 
             bool isCapture =
                 BitboardUtil.GetBit(position.OccupiedBitboard, targetSquare) != 0;
@@ -617,8 +615,8 @@ public static class MoveGeneration
         ulong attacks = AttackBitboards.GetRookAttacks(kingSquare, blockers);
         // Attacks could be from opponents queens or rooks
         ulong oppSilders = 
-            position.PieceBitboards[position.OpositionColour | Piece.Rook] |
-            position.PieceBitboards[position.OpositionColour | Piece.Queen];
+            position.PieceBitboards[position.OppositionColour | Piece.Rook] |
+            position.PieceBitboards[position.OppositionColour | Piece.Queen];
         return (attacks & oppSilders) != 0;
     }
 

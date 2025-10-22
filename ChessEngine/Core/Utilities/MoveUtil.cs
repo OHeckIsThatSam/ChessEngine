@@ -1,14 +1,12 @@
-﻿namespace ChessEngine.Core.Utilities;
+﻿namespace ChessEngine.Core;
 
 public static class MoveUtil
 {
     public static string MoveToUCI(Move move)
     {
-        string uciMove = string.Empty;
-
         string startSquare = ((BitboardUtil.Squares)move.StartSquare).ToString();
 
-        uciMove = startSquare + ((BitboardUtil.Squares)move.TargetSquare).ToString();
+        string uciMove = startSquare + ((BitboardUtil.Squares)move.TargetSquare).ToString();
 
         // Append promotion type
         if (move.IsPromotion)
@@ -41,7 +39,7 @@ public static class MoveUtil
         int promotionType = Piece.None;
         bool hasEnPassantTarget = false;
         int enPassantTargetSquare = 0;
-        bool isEnpassant = false;
+        bool isEnPassant = false;
         int targetPawnSquare = 0;
         if (Piece.Pawn == Piece.GetPieceType(movedPiece))
         {
@@ -64,7 +62,7 @@ public static class MoveUtil
                 !isCapture)
             {
                 isCapture = true;
-                isEnpassant = true;
+                isEnPassant = true;
                 targetPawnSquare = targetSquare +
                     (Piece.GetPieceColour(movedPiece) == Piece.White ? 8 : -8);
             }
@@ -112,7 +110,7 @@ public static class MoveUtil
         }
 
 
-        // If enpassant
+        // If EnPassant
 
         return new Move()
         {
@@ -124,7 +122,7 @@ public static class MoveUtil
             IsCastling = isCastling,
             RookStartSquare = rookStartSquare,
             RookTargetSquare = rookTargetSquare,
-            IsEnPassant = isEnpassant,
+            IsEnPassant = isEnPassant,
             TargetPawnSquare = targetPawnSquare,
             HasEnPassant = hasEnPassantTarget,
             EnPassantTargetSquare = enPassantTargetSquare,

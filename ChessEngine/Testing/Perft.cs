@@ -1,5 +1,4 @@
-﻿using ChessEngine.Core.Utilities;
-using ChessEngine.Core;
+﻿using ChessEngine.Core;
 using System.Diagnostics;
 
 namespace ChessEngine.Testing;

@@ -1,4 +1,4 @@
-﻿namespace ChessEngine.Core.Utilities;
+﻿namespace ChessEngine.Core;
 
 public static class FENUtil
 {
@@ -19,7 +19,7 @@ public static class FENUtil
         if (FENParts.Length != 6)
         {
             // TODO: Logging
-            Console.WriteLine("Invalid FEN String, it did not conatin exactly 6 parts.");
+            Console.WriteLine("Invalid FEN String, it did not contain exactly 6 parts.");
             FENParts = STARTING_FEN_STRING.Split(" ");
         }
 
@@ -27,7 +27,7 @@ public static class FENUtil
 
         // FEN string notates piece placement from left to right, Bitboards square
         // index is reversed compared to FEN string. So we reverse FEN string and
-        // board sqaures to get correct translation
+        // board squares to get correct translation
         int rank = 7;
         int file = 7;
 

@@ -41,7 +41,7 @@ public static class Piece
 
     // Bit masks to get the type or colour since white is 0 and black is 8
     // the colour can be determined by if the 4 bit is on the remaining bits
-    // dennote type
+    // denote type
     public const int TypeMask = 0b_0111;
     public const int ColourMask = 0b_1000;
 

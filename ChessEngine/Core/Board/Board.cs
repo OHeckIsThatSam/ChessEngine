@@ -1,19 +1,15 @@
-﻿using ChessEngine.Core.Utilities;
-using System.ComponentModel.Design;
-using System.Net.NetworkInformation;
-
-namespace ChessEngine.Core;
+﻿namespace ChessEngine.Core;
 
 public class Board : ICloneable
 {
     /// <summary>
-    /// Represents all Pieces on the board. Each position in the array is a sqaure
+    /// Represents all Pieces on the board. Each position in the array is a square
     /// on the board, and the integer representing the Piece occupying it.
     /// </summary>
     public int[] BoardSquares = new int[64];
 
     /// <summary>
-    /// Array of all piece bitboards with position corrisponding to Piece's number
+    /// Array of all piece bitboards with position corresponding to Piece's number
     /// </summary>
     public ulong[] PieceBitboards = new ulong[15];
 
@@ -26,7 +22,7 @@ public class Board : ICloneable
     public bool IsStalemate;
 
     public int ColourToMove;
-    public int OpositionColour => ColourToMove == Piece.White ? Piece.Black : Piece.White;
+    public int OppositionColour => ColourToMove == Piece.White ? Piece.Black : Piece.White;
 
     public int CastlingRights => CurrentBoardState.CastlingRights;
     public bool CanWhiteKingSideCastle => (CastlingRights & 0b_1000) != 0;
@@ -110,7 +106,7 @@ public class Board : ICloneable
 
     public void MakeMove(Move move)
     {
-        // Get peice from the start sqaure
+        // Get piece from the start square
         int piece = BoardSquares[move.StartSquare];
         ulong pieceBitboard = PieceBitboards[piece];
         ulong zobristHash = CurrentBoardState.ZobristHash;
@@ -142,7 +138,7 @@ public class Board : ICloneable
 
         if (move.IsPromotion)
         {
-            // Swap pawnbitboard for promotion type bitboard
+            // Swap pawn bitboard for promotion type bitboard
             PieceBitboards[piece] = pieceBitboard;
             piece = move.PromotionType | ColourToMove;
             pieceBitboard = PieceBitboards[piece];
@@ -230,7 +226,7 @@ public class Board : ICloneable
         _plyCount++;
         int updatedFiftyMoveCounter = CurrentBoardState.FiftyMoveCount + 1;
         
-        // If move was pawn or capture then stop fifty move count or repertition
+        // If move was pawn or capture then stop fifty move count or repetition 
         
 
         moveHistory.Add(move);
@@ -294,7 +290,7 @@ public class Board : ICloneable
 
         if (move.IsPromotion)
         {
-            piece = Piece.Pawn | OpositionColour;
+            piece = Piece.Pawn | OppositionColour;
             pieceBitboard = PieceBitboards[piece];
         }
 
@@ -316,7 +312,7 @@ public class Board : ICloneable
         CurrentBoardState = _previousStates.Peek();
     }
 
-    private void ToggleColourToMove() => ColourToMove = OpositionColour;
+    private void ToggleColourToMove() => ColourToMove = OppositionColour;
 
     private void UpdateColourBitboards()
     {
@@ -340,7 +336,7 @@ public class Board : ICloneable
     private void UpdateCheck()
     {
         ulong oppAttacks = AttackBitboards.GetAllAttacks(
-            OpositionColour, OccupiedBitboard, PieceBitboards);
+            OppositionColour, OccupiedBitboard, PieceBitboards);
 
         IsCheck = (oppAttacks & PieceBitboards[Piece.King | ColourToMove]) != 0;
     }

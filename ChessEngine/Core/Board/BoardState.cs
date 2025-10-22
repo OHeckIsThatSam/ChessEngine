@@ -1,6 +1,6 @@
 ﻿namespace ChessEngine.Core;
 
-public struct BoardState(
+public readonly struct BoardState(
     int capturedPieceType,
     int castlingRights,
     int enPassantSquare,

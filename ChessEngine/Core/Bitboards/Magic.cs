@@ -1,6 +1,4 @@
-﻿using ChessEngine.Core.Utilities;
-
-namespace ChessEngine.Core;
+﻿namespace ChessEngine.Core;
 
 public static class Magic
 {
@@ -8,11 +6,12 @@ public static class Magic
     private static ulong[] _rookMasks = new ulong[64];
     private static ulong[] _bishopMasks = new ulong[64];
 
-    // Hash table for moves avalable at each square with given magic blocker hash
+    // Hash table for moves available at each square with given magic blocker hash
     private static ulong[][] _rookMoves = new ulong[64][];
     private static ulong[][] _bishopMoves = new ulong[64][];
 
-    // Precaculated shifts and magic keys from https://github.com/SebLague/Chess-Coding-Adventure/blob/Chess-V2-UCI/Chess-Coding-Adventure/src/Core/Move%20Generation/Magics/PrecomputedMagics.cs
+    // Precalculated shifts and magic keys from 
+    // https://github.com/SebLague/Chess-Coding-Adventure/blob/Chess-V2-UCI/Chess-Coding-Adventure/src/Core/Move%20Generation/Magics/PrecomputedMagics.cs
     private static readonly int[] _rookShifts = { 52, 52, 52, 52, 52, 52, 52, 52, 53, 53, 53, 54, 53, 53, 54, 53, 53, 54, 54, 54, 53, 53, 54, 53, 53, 54, 53, 53, 54, 54, 54, 53, 52, 54, 53, 53, 53, 53, 54, 53, 52, 53, 54, 54, 53, 53, 54, 53, 53, 54, 54, 54, 53, 53, 54, 53, 52, 53, 53, 53, 53, 53, 53, 52 };
     private static readonly int[] _bishopShifts = { 58, 60, 59, 59, 59, 59, 60, 58, 60, 59, 59, 59, 59, 59, 59, 60, 59, 59, 57, 57, 57, 57, 59, 59, 59, 59, 57, 55, 55, 57, 59, 59, 59, 59, 57, 55, 55, 57, 59, 59, 59, 59, 57, 57, 57, 57, 59, 59, 60, 60, 59, 59, 59, 59, 60, 60, 58, 60, 59, 59, 59, 59, 59, 58 };
 
@@ -84,7 +83,7 @@ public static class Magic
 
         ulong[] table = new ulong[1 << 64 - shift];
 
-        // Iterate through all subsets of blockes using Carry-Rippler method
+        // Iterate through all subsets of blockers using Carry-Rippler method
         ulong subset = 0;
         do
         {
@@ -135,7 +134,7 @@ public static class Magic
         int targetRank = square / 8;
         int targetFile = square % 8;
 
-        // Mask rook attacks with checking for pieces stoping the attack
+        // Mask rook attacks with checking for pieces stopping the attack
         for (rank = targetRank, file = targetFile + 1;
              file <= 7;
              file++)

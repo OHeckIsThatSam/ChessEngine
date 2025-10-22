@@ -1,5 +1,4 @@
 ﻿using ChessEngine.Core;
-using ChessEngine.Core.Utilities;
 using System.Diagnostics;
 using System.Text;
 
@@ -68,7 +67,7 @@ internal class ComparePositions
         sb.AppendLine($"{(before.IsCheckmate == after.IsCheckmate ? "Equal Checkmate" : "UnEqual Checkmate")}");
         sb.AppendLine($"{(before.IsStalemate == after.IsStalemate ? "Equal Stalemate" : "UnEqual Stalemate")}");
 
-        sb.AppendLine($"{(before.HasEnPassantTargetSquare == after.HasEnPassantTargetSquare? "Equal Has EnpassantTargetSquare" : "UnEqual Has EnpassantTargetSquare")}");
+        sb.AppendLine($"{(before.HasEnPassantTargetSquare == after.HasEnPassantTargetSquare? "Equal Has EnPassantTargetSquare" : "UnEqual Has EnPassantTargetSquare")}");
         if (before.HasEnPassantTargetSquare)
         {
             sb.AppendLine($"Before: {before.EnPassantTargetSquare}, After: {after.EnPassantTargetSquare}");
@@ -81,7 +80,7 @@ internal class ComparePositions
             sb.AppendLine($"Piece Type before: {before.CurrentBoardState.CapturedPieceType}, After:{after.CurrentBoardState.CapturedPieceType}");
             sb.AppendLine($"Castling before: {before.CurrentBoardState.CastlingRights}, After:{after.CurrentBoardState.CastlingRights}");
             sb.AppendLine($"EnPassant before: {before.CurrentBoardState.EnPassantSquare}, After:{after.CurrentBoardState.EnPassantSquare}");
-            sb.AppendLine($"FifityMove before: {before.CurrentBoardState.FiftyMoveCount}, After:{after.CurrentBoardState.FiftyMoveCount}");
+            sb.AppendLine($"FiftyMove before: {before.CurrentBoardState.FiftyMoveCount}, After:{after.CurrentBoardState.FiftyMoveCount}");
         }
 
         if (isUnequal)

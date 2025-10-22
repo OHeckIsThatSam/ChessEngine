@@ -1,10 +1,8 @@
-﻿using ChessEngine.Core.Utilities;
-
-namespace ChessEngine.Core;
+﻿namespace ChessEngine.Core;
 
 /// <summary>
 /// A static class that provides attack bitboards for pieces on any given 
-/// sqaure of the board. Pawn, Knight and King attacks are precalclated as 
+/// square of the board. Pawn, Knight and King attacks are precalculated as 
 /// their attack's are not affected by other pieces positions. Bishop, Rook and  
 /// Queen are calculated on the fly with respect to all other pieces on the  
 /// board (blockers).
@@ -12,15 +10,10 @@ namespace ChessEngine.Core;
 /// Note: the attacks do not include any legality check, they are simply 
 /// bitboards to be used elsewhere by the engine. Legality checking will be done 
 /// during move search by a legal moves generator.
-/// 
-/// TODO: Calculating attack bitboards on the fly is inefficent. An improved 
-/// method is using Magic Bitboards to pre calculate sliding piece moves. THIS IS
-/// CALLED MAGIC FOR A REASON, I cannot understand how these work or how to  
-/// implement them at the moment.
 /// </summary>
 public static class AttackBitboards
 {
-    /* Pawn attacks is 2D for colour and position e.g. [side][sqaure].
+    /* Pawn attacks is 2D for colour and position e.g. [side][square].
      * The array is length nine so that the colour value defined in the Piece class
      * can be used as the index.
      */
@@ -75,7 +68,7 @@ public static class AttackBitboards
         ulong knightBitboard = BitboardUtil.AddBit(0, square);
         ulong knightAttacks = 0;
 
-        // Restict attacks on the edge and to stop attacks overflowing
+        // Restrict attacks on the edge and to stop attacks overflowing
         if ((knightBitboard & BitboardUtil.NotAFileMask) != 0)
         {
             knightAttacks |= knightBitboard >> 17;
@@ -262,8 +255,8 @@ public static class AttackBitboards
     }
 
     // TODO: Use masks of ranks and files to determine if start and target square
-    // are orthagonal to eachother.
-    public static ulong GetOrthagonalAttackRay(int startSquare, int targetSquare)
+    // are orthogonal to each other.
+    public static ulong GetOrthogonalAttackRay(int startSquare, int targetSquare)
     {
         ulong attackRay = 0;
 

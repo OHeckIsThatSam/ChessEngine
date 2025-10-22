@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Text;
 
-namespace ChessEngine.Core.Utilities;
+namespace ChessEngine.Core;
 
 public static class BitboardUtil
 {
@@ -63,7 +63,7 @@ public static class BitboardUtil
     /// Bitboard. 
     /// Loops through by position from smallest to largest.
     /// </summary>
-    /// <returns>The indexs of active bits.</returns>
+    /// <returns>The indexes of active bits.</returns>
     public static int[] GetActiveBits(ulong bitboard)
     {
         ulong bitboardCopy = bitboard;
@@ -96,7 +96,7 @@ public static class BitboardUtil
                 if (0.Equals(file))
                     stringBuilder.Append($" {8 - rank} ");
 
-                // Convert the sqaure index to determine if occupied 
+                // Convert the square index to determine if occupied 
                 var occupied = GetBit(bitboard, squareIndex).Equals(0) ? 0 : 1;
 
                 stringBuilder.Append($" {occupied}");

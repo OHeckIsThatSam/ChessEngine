@@ -1,6 +1,4 @@
-﻿using ChessEngine.Core.Utilities;
-
-namespace ChessEngine.Core;
+﻿namespace ChessEngine.Core;
 
 public static class Zobrist
 {
@@ -15,7 +13,7 @@ public static class Zobrist
 
     static Zobrist()
     {
-        Random rng = new Random();
+        Random rng = new();
 
         for (int squareIndex = 0; squareIndex < 64; squareIndex++)
         {

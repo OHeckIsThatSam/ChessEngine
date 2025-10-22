@@ -1,6 +1,4 @@
-﻿using ChessEngine.Core.Utilities;
-
-namespace ChessEngine.Core;
+﻿namespace ChessEngine.Core;
 
 public static class Evaluation
 {
@@ -25,21 +23,21 @@ public static class Evaluation
     private static GamePhase _phase = GamePhase.Middle;
 
     /// <summary>
-    /// Evaluates the postion of the provided board. Factors that impact the score;  
+    /// Evaluates the position of the provided board. Factors that impact the score;  
     /// Balance of material, ...
     /// 
     /// Note:
     /// The score's sign + or - is subject to the colour to move. e.g. if the 
     /// position is evaluated to be 3 points better for white then if it's black's 
-    /// move then the postion is -3 or +3 if it's white to move. 
+    /// move then the position is -3 or +3 if it's white to move. 
     /// This is essential to work with the NegaMax search algorithm.
     /// </summary>
     /// <param name="board">The current state of the board</param>
-    /// <returns>The score of the postion, subject to the colour to move</returns>
+    /// <returns>The score of the position, subject to the colour to move</returns>
     public static int Evaluate(Board board)
     {
         // Calculate game phase
-        // If nethier queens are on the board or if each side with a queen has no other minor
+        // If neither queens are on the board or if each side with a queen has no other minor
         // pieces
         ulong whiteQueen = board.PieceBitboards[Piece.WhiteQueen];
         ulong blackQueen = board.PieceBitboards[Piece.BlackQueen];

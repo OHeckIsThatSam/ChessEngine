@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace ChessEngine.Core.Utilities;
+namespace ChessEngine.Core;
 
 public static class BoardUtil
 {
